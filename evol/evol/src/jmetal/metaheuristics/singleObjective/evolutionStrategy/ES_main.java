@@ -54,18 +54,20 @@ public class ES_main {
     
     // Requirement: lambda must be divisible by mu
     mu     = 1  ;
-    lambda = 10 ;
+    lambda = 1 ;
     
-    algorithm = new ElitistES(problem, mu, lambda);
+    algorithm = new OnePlusOneES(problem, mu, lambda);
     //algorithm = new NonElitistES(problem, mu, lambda);
-    
+    //algorithm = new ElitistES(problem, mu, lambda);
+
     /* Algorithm params*/
-    algorithm.setInputParameter("maxEvaluations", 20000);
-    
+    //algorithm.setInputParameter("maxEvaluations", 20000);
+    algorithm.setInputParameter("maxEvaluations", 2000);
+
     /* Mutation and Crossover for Real codification */
     parameters = new HashMap() ;
     parameters.put("probability", 1.0/bits) ;
-    mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);                    
+    mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);
     
     algorithm.addOperator("mutation",mutation);
  
