@@ -58,8 +58,8 @@ public class OnePlusOneES extends Algorithm {
         newIndividual = new Solution(problem_);
         problem_.evaluate(newIndividual);
         evaluations++;
-        population.add(newIndividual);
         betterIndividual = new Solution(newIndividual);
+        population.add(betterIndividual);
 
         // Main loop
         while (evaluations < maxEvaluations) {
@@ -75,9 +75,8 @@ public class OnePlusOneES extends Algorithm {
 
             // STEP 3. Sort the mu+lambda population
             //offspringPopulation.sort(comparator) ;
-            
-            if(comparator.compare(offspringPopulation.get(0),
-                                  population.get(0)) > 0) {
+
+            if(comparator.compare(population.get(0), offspringPopulation.get(0)) > 0) {
                 betterIndividual = new Solution(offspringPopulation.get(0));
                 population.clear();
                 // STEP 4. Create the new mu population
@@ -87,7 +86,7 @@ public class OnePlusOneES extends Algorithm {
             System.out.println(/*evaluations + " " +*/
                     population.get(0).getObjective(0)) ;
 
-            // STEP 6. Delete the mu+lambda population
+            // STEP 6. Delete the offspring population
             offspringPopulation.clear() ;
         } // while
 

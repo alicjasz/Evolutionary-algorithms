@@ -25,7 +25,7 @@ import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
 import jmetal.operators.mutation.MutationFactory;
-import jmetal.problems.singleObjective.OneMax;
+import jmetal.problems.singleObjective.Rastrigin;
 import jmetal.util.JMException;
 
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class ES_main {
     int bits ; // Length of bit string in the OneMax problem
     
     bits = 512 ;
-    problem = new OneMax("Binary", bits);
+    problem = new Rastrigin("BinaryReal", bits);
     
     int mu     ; 
     int lambda ; 
@@ -55,7 +55,7 @@ public class ES_main {
     // Requirement: lambda must be divisible by mu
     mu     = 1  ;
     lambda = 1 ;
-    
+
     algorithm = new OnePlusOneES(problem, mu, lambda);
     //algorithm = new NonElitistES(problem, mu, lambda);
     //algorithm = new ElitistES(problem, mu, lambda);
