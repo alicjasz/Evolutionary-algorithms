@@ -89,9 +89,6 @@ public class MemeticAlgorithm extends Algorithm{
 
                 // Mutation
                 mutationOperator.execute(offspring[0]);
-                System.out.println("Offspring fitness " + offspring[0].getObjective(0));
-                System.out.println("parents[0] fitness " + parents[0].getObjective(0));
-                System.out.println("parents[1] fitness " + parents[1].getObjective(0));
 
                 // Evaluation of the new individual
                 problem_.evaluate(offspring[0]);
@@ -99,9 +96,10 @@ public class MemeticAlgorithm extends Algorithm{
                 evaluations += 1;
 //
                 // Local Search using HillClimbing
-
-                offspring[0] = (Solution) localSearchOperator.execute(offspring[0]);
-
+                Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
+                if(local_offspring.getObjective(0) > offspring[0].getObjective(0))
+                    offspring[0] = local_offspring;
+                
                 // Replacement: the two new individuals are inserted in the offspring
                 // population
                 if(parents[0].getFitness() > offspring[0].getFitness()) {
