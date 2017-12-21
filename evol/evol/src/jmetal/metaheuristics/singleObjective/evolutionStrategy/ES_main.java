@@ -44,10 +44,7 @@ public class ES_main {
             
     HashMap  parameters ; // Operator parameters
 
-    int bits ; // Length of bit string in the OneMax problem
-    
-    bits = 512 ;
-    problem = new Rastrigin("BinaryReal", bits);
+    problem = new Rastrigin("Real", 50);
     
     int mu     ; 
     int lambda ; 
@@ -66,8 +63,9 @@ public class ES_main {
 
     /* Mutation and Crossover for Real codification */
     parameters = new HashMap() ;
-    parameters.put("probability", 1.0/bits) ;
-    mutation = MutationFactory.getMutationOperator("BitFlipMutation", parameters);
+    parameters.put("probability", 0.7) ;
+    parameters.put("perturbation", 0.1) ;
+    mutation = MutationFactory.getMutationOperator("UniformMutation", parameters);
     
     algorithm.addOperator("mutation",mutation);
  
