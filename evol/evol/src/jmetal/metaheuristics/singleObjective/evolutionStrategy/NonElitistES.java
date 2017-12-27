@@ -106,10 +106,15 @@ public class NonElitistES extends Algorithm {
       for (int i = 0; i < mu_; i++) {
         for (int j = 0; j < offsprings; j++) {
           Solution offspring = new Solution(population.get(i)) ;
-          mutationOperator.execute(offspring);
-          problem_.evaluate(offspring) ;
-          offspringPopulation.add(offspring) ;
-          evaluations ++ ;
+          Solution mutated = (Solution) mutationOperator.execute(offspring);
+
+          // Lamarck
+          if(comparator.compare(mutated, offspring) > 0)
+            offspring = mutated;
+
+          problem_.evaluate(offspring);
+          offspringPopulation.add(offspring);
+          evaluations++;
         } // for
       } // for
    
@@ -125,9 +130,9 @@ public class NonElitistES extends Algorithm {
       for (int i = 0; i < mu_; i++)
         population.add(offspringPopulation.get(i)) ;
 
-      System.out.println("Evaluation: " + evaluations + 
-          " Current best fitness: " +  population.get(0).getObjective(0) +
-          " Global best fitness: " + bestIndividual.getObjective(0)) ;
+      System.out.println(/*"Evaluation: " + evaluations +
+          " Current best fitness: " +  */population.get(0).getObjective(0)/* +
+          " Global best fitness: " + bestIndividual.getObjective(0)*/) ;
 
       // STEP 5. Delete the lambda population
       offspringPopulation.clear() ;

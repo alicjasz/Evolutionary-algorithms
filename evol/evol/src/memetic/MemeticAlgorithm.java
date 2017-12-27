@@ -94,12 +94,14 @@ public class MemeticAlgorithm extends Algorithm{
                 problem_.evaluate(offspring[0]);
 
                 evaluations += 1;
-//
+
                 // Local Search using HillClimbing
                 Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
-                if(local_offspring.getObjective(0) > offspring[0].getObjective(0))
+
+                // Lamarck
+                if(comparator.compare(local_offspring, offspring[0]) > 0)
                     offspring[0] = local_offspring;
-                
+
                 // Replacement: the two new individuals are inserted in the offspring
                 // population
                 if(parents[0].getFitness() > offspring[0].getFitness()) {
