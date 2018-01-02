@@ -90,31 +90,38 @@ public class MemeticAlgorithm extends Algorithm{
                 // Mutation
                 mutationOperator.execute(offspring[0]);
 
+                // Lamarck I
+                // Solution mutated_solution = (Solution) mutationOperator.execute(offspring[0]);
+                // if(comparator.compare(mutated_solution, offspring[0]) > 0)
+                // offspring[0] = local_offspring;
+
+                // Lamarck II
+                /*Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
+                if(comparator.compare(local_offspring, offspring[0]) > 0)
+                    offspring[0] = local_offspring;*/
+
                 // Evaluation of the new individual
                 problem_.evaluate(offspring[0]);
 
+                //Baldwin
+                Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
+                offspring[0].setObjective(0, local_offspring.getObjective(0));
                 evaluations += 1;
 
                 // Local Search using HillClimbing
-                Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
+                //Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
 
-                // Lamarck
-                if(comparator.compare(local_offspring, offspring[0]) > 0)
-                    offspring[0] = local_offspring;
 
                 // Replacement: the two new individuals are inserted in the offspring
                 // population
-                if(parents[0].getFitness() > offspring[0].getFitness()) {
-                    offspringPopulation.add(parents[0]);
-                }else {
+                if(parents[0].getObjective(0) > offspring[0].getObjective(0)) {
                     offspringPopulation.add(offspring[0]);
+                }else {
+                    offspringPopulation.add(parents[0]);
                 }
 
 //				offspringPopulation.add(offspring[1]);
             } // for
-
-
-
 
             // The offspring population becomes the new current population
             population.clear();
