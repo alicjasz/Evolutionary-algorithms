@@ -65,20 +65,10 @@ public class OnePlusOneES extends Algorithm {
         while (evaluations < maxEvaluations) {
             // STEP 1. Generate the offspring
             Solution offspring = new Solution(population.get(0)) ;
-            Solution mutated = (Solution) mutationOperator.execute(offspring);
-            // Lamarck
-            if(comparator.compare(mutated, offspring) > 0)
-                offspring = mutated;
-
+            mutationOperator.execute(offspring);
             problem_.evaluate(offspring);
             offspringPopulation.add(offspring);
             evaluations++;
-
-            // STEP 2. Add the mu (parent) individual to the offspring population
-            //offspringPopulation.add(population.get(0)) ;
-
-            // STEP 3. Sort the mu+lambda population
-            //offspringPopulation.sort(comparator) ;
 
             if(comparator.compare(betterIndividual, offspringPopulation.get(0)) > 0) {
                 betterIndividual = new Solution(offspringPopulation.get(0));
@@ -87,8 +77,7 @@ public class OnePlusOneES extends Algorithm {
                 population.add(betterIndividual);
             }
 
-            System.out.println(/*evaluations + " " +*/
-                    population.get(0).getObjective(0)) ;
+            System.out.println(population.get(0).getObjective(0)) ;
 
             // STEP 6. Delete the offspring population
             offspringPopulation.clear() ;

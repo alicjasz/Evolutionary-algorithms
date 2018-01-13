@@ -94,11 +94,7 @@ public class ElitistES extends Algorithm {
       for (int i = 0; i < mu_; i++) {
         for (int j = 0; j < offsprings; j++) {
           Solution offspring = new Solution(population.get(i)) ;
-          // Lamarck
-          Solution mutated = (Solution) mutationOperator.execute(offspring) ;
-          if(comparator.compare(mutated, offspring) > 0)
-            offspring = mutated;
-
+          mutationOperator.execute(offspring) ;
           problem_.evaluate(offspring);
           offspringPopulation.add(offspring);
           evaluations++;
@@ -118,8 +114,7 @@ public class ElitistES extends Algorithm {
       for (int i = 0; i < mu_; i++)
         population.add(offspringPopulation.get(i)) ;
 
-      System.out.println(/*"Evaluation: " + evaluations + " Fitness: " +*/
-          population.get(0).getObjective(0)) ; 
+      System.out.println(/*"Evaluation: " + evaluations + " Fitness: " +*/population.get(0).getObjective(0)) ;
 
       // STEP 6. Delete the mu+lambda population
       offspringPopulation.clear() ;

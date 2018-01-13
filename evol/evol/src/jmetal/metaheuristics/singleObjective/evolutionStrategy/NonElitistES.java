@@ -69,7 +69,7 @@ public class NonElitistES extends Algorithm {
     maxEvaluations = ((Integer)this.getInputParameter("maxEvaluations")).intValue();                
    
     // Initialize the variables
-    population          = new SolutionSet(mu_ + 1) ;   
+    population          = new SolutionSet(mu_) ;
     offspringPopulation = new SolutionSet(lambda_) ;
     
     evaluations  = 0;                
@@ -86,11 +86,10 @@ public class NonElitistES extends Algorithm {
     evaluations ++ ;
     population.add(newIndividual);
     bestIndividual = new Solution(newIndividual) ;
-    
-    for (int i = 1; i < mu_; i++) {
-      System.out.println(i) ;
-      newIndividual = new Solution(problem_);                    
-      problem_.evaluate(newIndividual);            
+
+    for (int i = 0; i < mu_; i++) {
+      newIndividual = new Solution(problem_);
+      problem_.evaluate(newIndividual);
       evaluations++;
       population.add(newIndividual);
       
@@ -106,12 +105,7 @@ public class NonElitistES extends Algorithm {
       for (int i = 0; i < mu_; i++) {
         for (int j = 0; j < offsprings; j++) {
           Solution offspring = new Solution(population.get(i)) ;
-          Solution mutated = (Solution) mutationOperator.execute(offspring);
-
-          // Lamarck
-          if(comparator.compare(mutated, offspring) > 0)
-            offspring = mutated;
-
+          mutationOperator.execute(offspring);
           problem_.evaluate(offspring);
           offspringPopulation.add(offspring);
           evaluations++;
@@ -120,19 +114,20 @@ public class NonElitistES extends Algorithm {
    
       // STEP 2. Sort the lambda population
       offspringPopulation.sort(comparator) ;
-            
+
       // STEP 3. Update the best individual 
       if (comparator.compare(bestIndividual, offspringPopulation.get(0)) > 0 )
-        bestIndividual = new Solution(offspringPopulation.get(0)) ;
-      
-      // STEP 4. Create the new mu population
-      population.clear() ;
-      for (int i = 0; i < mu_; i++)
-        population.add(offspringPopulation.get(i)) ;
+        bestIndividual = new Solution(offspringPopulation.get(0));
+
 
       System.out.println(/*"Evaluation: " + evaluations +
           " Current best fitness: " +  */population.get(0).getObjective(0)/* +
           " Global best fitness: " + bestIndividual.getObjective(0)*/) ;
+
+      // STEP 4. Create the new mu population
+      population.clear() ;
+      for (int i = 0; i < mu_; i++)
+        population.add(offspringPopulation.get(i)) ;
 
       // STEP 5. Delete the lambda population
       offspringPopulation.clear() ;
@@ -141,7 +136,8 @@ public class NonElitistES extends Algorithm {
     // Return a population with the best individual
     SolutionSet resultPopulation = new SolutionSet(1) ;
     resultPopulation.add(population.get(0)) ;
-    
+
+    System.out.println("Evaluations: " + evaluations);
     return resultPopulation ;
   } // execute
 } // NonElitisES
