@@ -50,21 +50,21 @@ public class ES_main {
     int lambda ; 
     
     // Requirement: lambda must be divisible by mu
-    mu     = 1  ;
-    lambda = 1 ;
+    mu     = 2  ;
+    lambda = 4 ;
 
-    algorithm = new OnePlusOneES(problem, mu, lambda);
-    //algorithm = new NonElitistES(problem, mu, lambda);
-    //algorithm = new ElitistES(problem, mu, lambda);
+    //algorithm = new OnePlusOneES(problem, mu, lambda);
+    //algorithm = new MuLambda(problem, mu, lambda);
+    algorithm = new MuPlusLambda(problem, mu, lambda);
 
     /* Algorithm params*/
     //algorithm.setInputParameter("maxEvaluations", 20000);
-    algorithm.setInputParameter("maxEvaluations", 2000);
+    algorithm.setInputParameter("maxEvaluations", 20000);
 
     /* Mutation and Crossover for Real codification */
     parameters = new HashMap() ;
-    parameters.put("probability", 0.7) ;
-    parameters.put("perturbation", 0.1) ;
+    parameters.put("probability", 0.2) ;
+    parameters.put("perturbation", 0.8) ;
     mutation = MutationFactory.getMutationOperator("UniformMutation", parameters);
     
     algorithm.addOperator("mutation",mutation);

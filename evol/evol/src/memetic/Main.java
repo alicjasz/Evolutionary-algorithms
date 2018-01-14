@@ -1,21 +1,17 @@
 package memetic;
 
-import java.util.HashMap;
-
 import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
-import jmetal.metaheuristics.singleObjective.evolutionStrategy.ElitistES;
-import jmetal.metaheuristics.singleObjective.geneticAlgorithm.gGA;
 import jmetal.operators.crossover.CrossoverFactory;
-import jmetal.operators.localSearch.HillClimbing;
 import jmetal.operators.localSearch.MutationLocalSearch;
 import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.problems.singleObjective.Rastrigin;
-import jmetal.problems.singleObjective.Sphere;
 import jmetal.util.JMException;
+
+import java.util.HashMap;
 
 public class Main {
 	public static void main(String [] args) throws JMException, ClassNotFoundException {

@@ -67,7 +67,7 @@ public class MemeticAlgorithm extends Algorithm{
         // Sort population
         population.sort(comparator);
 
-        while ((evaluations < maxEvaluations)) {
+        while (evaluations < maxEvaluations) {
             // if ((evaluations % 10) == 0) {
             System.out.println(population.get(0).getObjective(0));
             // } //
@@ -90,15 +90,11 @@ public class MemeticAlgorithm extends Algorithm{
                 // Mutation
                 mutationOperator.execute(offspring[0]);
 
-                // Lamarck I
-                // Solution mutated_solution = (Solution) mutationOperator.execute(offspring[0]);
-                // if(comparator.compare(mutated_solution, offspring[0]) > 0)
-                // offspring[0] = local_offspring;
+                // Lamarck
+                //Solution mutated_solution = (Solution) mutationOperator.execute(offspring[0]);
+                //if(offspring[0].getObjective(0) < mutated_solution.getObjective(0))
+                //  offspring[0] = mutated_solution;
 
-                // Lamarck II
-                /*Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
-                if(comparator.compare(local_offspring, offspring[0]) > 0)
-                    offspring[0] = local_offspring;*/
 
                 // Evaluation of the new individual
                 problem_.evaluate(offspring[0]);
@@ -109,7 +105,7 @@ public class MemeticAlgorithm extends Algorithm{
                 evaluations += 1;
 
                 // Local Search using HillClimbing
-                //Solution local_offspring = (Solution) localSearchOperator.execute(offspring[0]);
+                //offspring[0] = (Solution) localSearchOperator.execute(offspring[0]);
 
 
                 // Replacement: the two new individuals are inserted in the offspring
@@ -119,6 +115,7 @@ public class MemeticAlgorithm extends Algorithm{
                 }else {
                     offspringPopulation.add(parents[0]);
                 }
+
 
 //				offspringPopulation.add(offspring[1]);
             } // for
