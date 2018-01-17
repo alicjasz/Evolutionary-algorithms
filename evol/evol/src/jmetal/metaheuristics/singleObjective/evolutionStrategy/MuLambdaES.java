@@ -22,6 +22,7 @@
 package jmetal.metaheuristics.singleObjective.evolutionStrategy;
 
 import jmetal.core.*;
+import jmetal.operators.localSearch.LocalSearch;
 import jmetal.util.JMException;
 import jmetal.util.comparators.ObjectiveComparator;
 
@@ -62,7 +63,9 @@ public class MuLambdaES extends Algorithm {
 
     Operator   mutationOperator ;
     Comparator comparator       ;
-    
+    Operator localSearchOperator;
+
+
     comparator = new ObjectiveComparator(0) ; // Single objective comparator
     
     // Read the params
@@ -76,6 +79,8 @@ public class MuLambdaES extends Algorithm {
 
     // Read the operators
     mutationOperator  = this.operators_.get("mutation");
+    localSearchOperator = (LocalSearch) operators_.get("improvement");
+
 
     System.out.println("(" + mu_ + " , " + lambda_+")ES") ;
      
@@ -106,7 +111,14 @@ public class MuLambdaES extends Algorithm {
         for (int j = 0; j < offsprings; j++) {
           Solution offspring = new Solution(population.get(i)) ;
           mutationOperator.execute(offspring);
+
+          /*Solution mutated_solution = (Solution) mutationOperator.execute(offspring);
+          if(offspring.getObjective(0) < mutated_solution.getObjective(0))
+            offspring = mutated_solution;*/
+
           problem_.evaluate(offspring);
+          Solution local_offspring = (Solution) localSearchOperator.execute(offspring);
+          offspring.setObjective(0, local_offspring.getObjective(0));
           offspringPopulation.add(offspring);
           evaluations++;
         } // for

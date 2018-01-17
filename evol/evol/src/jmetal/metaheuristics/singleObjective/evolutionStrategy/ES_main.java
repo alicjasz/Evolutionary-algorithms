@@ -24,6 +24,7 @@ import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.SolutionSet;
+import jmetal.operators.localSearch.MutationLocalSearch;
 import jmetal.operators.mutation.MutationFactory;
 import jmetal.problems.singleObjective.Rastrigin;
 import jmetal.util.JMException;
@@ -41,7 +42,8 @@ public class ES_main {
     Problem   problem   ;         // The problem to solve
     Algorithm algorithm ;         // The algorithm to use
     Operator  mutation  ;         // Mutation operator
-            
+    Operator improvement; 		  // Operator for improvement
+
     HashMap  parameters ; // Operator parameters
 
     problem = new Rastrigin("Real", 50);
@@ -50,12 +52,12 @@ public class ES_main {
     int lambda ; 
     
     // Requirement: lambda must be divisible by mu
-    mu     = 2  ;
-    lambda = 4 ;
+    mu     = 1  ;
+    lambda = 1 ;
 
-    //algorithm = new OnePlusOneES(problem, mu, lambda);
-    //algorithm = new MuLambda(problem, mu, lambda);
-    algorithm = new MuPlusLambda(problem, mu, lambda);
+    algorithm = new OnePlusOneES(problem, mu, lambda);
+    //algorithm = new MuLambdaES(problem, mu, lambda);
+    //algorithm = new MuPlusLambdaES(problem, mu, lambda);
 
     /* Algorithm params*/
     //algorithm.setInputParameter("maxEvaluations", 20000);
@@ -66,9 +68,17 @@ public class ES_main {
     parameters.put("probability", 0.2) ;
     parameters.put("perturbation", 0.8) ;
     mutation = MutationFactory.getMutationOperator("UniformMutation", parameters);
-    
+
+    HashMap params = new HashMap() ;
+    params.put("improvementRounds", 5) ;
+    params.put("problem", problem) ;
+    params.put("mutation", mutation) ;
+//    params.put("max_local_gens", 20) ;
+    improvement = new MutationLocalSearch(params);
+
     algorithm.addOperator("mutation",mutation);
- 
+    algorithm.addOperator("improvement", improvement);
+
     /* Execute the Algorithm */
     long initTime = System.currentTimeMillis();
     SolutionSet population = algorithm.execute();

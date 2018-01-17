@@ -1,6 +1,7 @@
 package jmetal.metaheuristics.singleObjective.evolutionStrategy;
 
 import jmetal.core.*;
+import jmetal.operators.localSearch.LocalSearch;
 import jmetal.util.JMException;
 import jmetal.util.comparators.ObjectiveComparator;
 
@@ -35,7 +36,9 @@ public class OnePlusOneES extends Algorithm {
         Solution betterIndividual ;
 
         Operator mutationOperator ;
-        Comparator comparator       ;
+        Comparator comparator     ;
+        Operator localSearchOperator ;
+
 
         comparator = new ObjectiveComparator(0) ; // Single objective comparator
 
@@ -50,6 +53,7 @@ public class OnePlusOneES extends Algorithm {
 
         // Read the operators
         mutationOperator  = this.operators_.get("mutation");
+        localSearchOperator = (LocalSearch) operators_.get("improvement");
 
         System.out.println("(" + mu_ + " + " + lambda_+")ES") ;
 
@@ -66,7 +70,12 @@ public class OnePlusOneES extends Algorithm {
             // STEP 1. Generate the offspring
             Solution offspring = new Solution(population.get(0)) ;
             mutationOperator.execute(offspring);
+            /*Solution mutated_solution = (Solution) mutationOperator.execute(offspring);
+            if(offspring.getObjective(0) < mutated_solution.getObjective(0))
+                offspring = mutated_solution;*/
             problem_.evaluate(offspring);
+            Solution local_offspring = (Solution) localSearchOperator.execute(offspring);
+            offspring.setObjective(0, local_offspring.getObjective(0));
             offspringPopulation.add(offspring);
             evaluations++;
 
